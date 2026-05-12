@@ -1,0 +1,80 @@
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 400
+      min-spare: 50
+    accept-count: 1000
+    max-connections: 10000
+
+spring:
+  application:
+    name: seckill-system
+  datasource:
+    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: root
+    password: root123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 3000
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 100
+          max-idle: 50
+          min-idle: 10
+          max-wait: 2000ms
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      acks: "1"
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      linger-ms: 5
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: seckill-order-consumer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      max-poll-records: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.seckill.dto"
+    listener:
+      ack-mode: manual_immediate
+      concurrency: 3
+      type: batch
+
+seckill:
+  topic:
+    order: seckill-order
+  cache:
+    product-ttl-seconds: 3600
+    logical-expire-seconds: 600
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  level:
+    com.seckill: debug
+    org.springframework.kafka: warn
+    org.apache.kafka: warn
