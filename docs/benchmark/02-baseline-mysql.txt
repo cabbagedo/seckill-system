@@ -1,0 +1,13 @@
+Running 1m test @ http://localhost:8080/api/seckill/do
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   226.44ms   88.33ms 911.20ms   69.75%
+    Req/Sec   275.05     48.14   444.00     71.70%
+  Latency Distribution
+     50%  217.91ms
+     75%  278.32ms
+     90%  342.86ms
+     99%  474.50ms
+  131478 requests in 1.00m, 25.17MB read
+Requests/sec:   2190.09
+Transfer/sec:    429.25KB
